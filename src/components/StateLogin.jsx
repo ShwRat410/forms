@@ -7,7 +7,20 @@ export default function Login() {
     password:''
   })
 
-  const emailIsValid = enteredValues.email === "" || enteredValues.email.includes('@')
+  const [didEdit,setDidEdit] = useState({
+    email:false,
+    password:false
+  })
+
+  const emailIsValid = !didEdit.email || enteredValues.email.includes('@')
+
+  function handleOnBlur(identifier){
+    console.log("Inside blur")
+    setDidEdit((prevValues)=>({
+        ...prevValues,
+        [identifier]:true
+    }))
+  }
 
   function handleOnSubmit(event){
     console.log(enteredValues)
@@ -33,6 +46,7 @@ export default function Login() {
             type="email" 
             name="email" 
             value={enteredValues.email} 
+            onBlur={()=>handleOnBlur('email')}
             onChange={(event)=>handleOnChange('email',event.target.value)}
           />
           <div className="control-error">{!emailIsValid && <p>Entered email is not valid</p>}</div>
