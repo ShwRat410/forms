@@ -2,6 +2,8 @@ import { useState,useRef } from "react"
 
 export default function Login() {
 
+  const[emailValidityStatus,setEmailValidityStatus] = useState(false);
+
   const email = useRef();
   const password = useRef();
 
@@ -9,7 +11,13 @@ export default function Login() {
     event.preventDefault()
     const enteredEmail = email.current.value
     const enteredPassword = password.current.value
-    console.log(enteredEmail,enteredPassword)
+    const emailIsInvalid = !enteredEmail.includes('@gmail.com')
+    if(emailIsInvalid){
+      setEmailValidityStatus(true)
+      return
+    }
+    setEmailValidityStatus(false)
+    console.log("Sending http request")
   }
 
   return (
@@ -25,6 +33,7 @@ export default function Login() {
             name="email" 
             ref={email}
           />
+          <div className="control-error">{emailValidityStatus && <p>Entered email is not valid</p>}</div>
         </div>
 
         <div className="control no-margin">
