@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Input from "./Input"
 
 export default function Login() {
 
@@ -12,7 +13,8 @@ export default function Login() {
     password:false
   })
 
-  const emailIsValid = !didEdit.email || enteredValues.email.includes('@')
+  const emailIsInValid = didEdit.email && !enteredValues.email.includes('@gmail.com')
+  const passwordIsInvalid = didEdit.password && enteredValues.password.trim().length < 6 
 
   function handleOnBlur(identifier){
     console.log("Inside blur")
@@ -39,31 +41,31 @@ export default function Login() {
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input 
+        <Input 
+            label="Email"
             id="email" 
-            type="email" 
+            type="text" 
             name="email" 
             value={enteredValues.email} 
             onBlur={()=>handleOnBlur('email')}
             onChange={(event)=>handleOnChange('email',event.target.value)}
-          />
-          <div className="control-error">{!emailIsValid && <p>Entered email is not valid</p>}</div>
-        </div>
-
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password"
+            error={emailIsInValid && "Please enter a valid email"}
+        />
+        <Input 
+            label="Password"
+            id="password" 
+            type="password" 
+            name="password" 
             value={enteredValues.password} 
+            onBlur={()=>handleOnBlur('password')}
             onChange={(event)=>handleOnChange('password',event.target.value)}
-          />
-        </div>
+            error={passwordIsInvalid && "Please enter a valid password"}
+        />
       </div>
 
       <p className="form-actions">
-        <button className="button button-flat">Reset</button>
-        <button className="button">Login</button>
+        <button  className="button button-flat">Reset</button>
+        <button  className="button">Login</button>
       </p>
     </form>
   );
